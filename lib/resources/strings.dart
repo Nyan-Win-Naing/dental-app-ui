@@ -1,0 +1,1 @@
+const HOME_PAGE_SEARCH_HINT_TEXT = "Search";
