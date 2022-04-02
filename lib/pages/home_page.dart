@@ -5,6 +5,7 @@ import 'package:dental_app/dummy/dummy_time_list.dart';
 import 'package:dental_app/pages/detail_page.dart';
 import 'package:dental_app/resources/colors.dart';
 import 'package:dental_app/resources/dimens.dart';
+import 'package:dental_app/resources/show_snack_method.dart';
 import 'package:dental_app/resources/strings.dart';
 import 'package:dental_app/viewitems/patient_view.dart';
 import 'package:dental_app/widgets/page_category_header_view.dart';
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(130.0),
+        preferredSize: Size.fromHeight(APP_BAR_HEIGHT),
         child: AppBar(
           elevation: 0,
           backgroundColor: PRIMARY_COLOR,
@@ -50,7 +51,7 @@ class HomePage extends StatelessWidget {
                   ),
                   SizedBox(height: MARGIN_LARGE),
                   TimeAndEventsSectionView(),
-                  SizedBox(height: MARGIN_XXLARGE + 30),
+                  SizedBox(height: MARGIN_XXLARGE + 500),
                 ],
               ),
             ),
@@ -59,7 +60,7 @@ class HomePage extends StatelessWidget {
               child: FooterMenuSectionView(
                   screenHeight: screenHeight, screenWidth: screenWidth),
             ),
-            Positioned(
+            const Positioned(
               bottom: 30,
               left: 0,
               right: 0,
@@ -199,15 +200,36 @@ class AppBarSearchAndProfileSectionView extends StatelessWidget {
   }
 }
 
-class TimeAndEventsSectionView extends StatelessWidget {
-  const TimeAndEventsSectionView({
-    Key? key,
-  }) : super(key: key);
+class TimeAndEventsSectionView extends StatefulWidget {
+
+  @override
+  State<TimeAndEventsSectionView> createState() => _TimeAndEventsSectionViewState();
+}
+
+class _TimeAndEventsSectionViewState extends State<TimeAndEventsSectionView> {
+
+  var _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      print("This is scroll controller");
+      if(_scrollController.position.atEdge) {
+        if(_scrollController.position.pixels == 0) {
+          print("Start of the list reached");
+        } else {
+          print("End ot the list reached");
+          // widget.onListEndReached();
+          showSnackBar(context, "Load Data");
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.blue,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -219,41 +241,35 @@ class TimeAndEventsSectionView extends StatelessWidget {
       ),
       height: 450,
       child: Padding(
-        padding: EdgeInsets.only(left: MARGIN_LARGE),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SmartTimeListView(
-              timeList: timeList,
-              onListEndReached: () {
-                _showSnackBar(context, 'Loading more data from time list');
+          padding: EdgeInsets.only(left: MARGIN_LARGE, bottom: MARGIN_XXLARGE + 80),
+          child: RefreshIndicator(
+            onRefresh: () async {},
+            color: Colors.white,
+            backgroundColor: PRIMARY_COLOR,
+            child: ListView.builder(
+              controller: _scrollController,
+              itemCount: 1,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SmartTimeListView(
+                      timeList: timeList,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: DividerForTimeAndEventSectionView(),
+                    ),
+                    // SizedBox(width: MARGIN_MEDIUM),
+                    SmartEventListView(
+                      eventList: eventList,
+                    ),
+                  ],
+                );
               },
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: DividerForTimeAndEventSectionView(),
-            ),
-            // SizedBox(width: MARGIN_MEDIUM),
-            SmartEventListView(
-              eventList: eventList,
-              onListEndReached: () {
-                _showSnackBar(context, "Loading more data from event list");
-              },
-            ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        backgroundColor: PRIMARY_COLOR_DARK,
-        content: Text(message, textAlign: TextAlign.center),
-        behavior: SnackBarBehavior.floating,
-      ),
     );
   }
 }
@@ -296,7 +312,7 @@ class DividerForTimeAndEventSectionView extends StatelessWidget {
         ),
         const DottedLine(
           direction: Axis.vertical,
-          lineLength: 200,
+          lineLength: 360,
           lineThickness: 2.0,
           dashLength: 4.0,
           dashColor: Color.fromRGBO(0, 0, 0, 0.1),
@@ -364,7 +380,7 @@ class PlusFooterButtonSectionView extends StatelessWidget {
                   spreadRadius: 0.05,
                 ),
               ]),
-          child: Center(
+          child: const Center(
             child: Icon(
               Icons.add,
               color: Colors.white,
@@ -404,7 +420,7 @@ class PatientSectionView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PageCategoryHeaderView(
-                    title: "My Patients", description: "12 total"),
+                    title: HOME_PAGE_MY_PATIENTS_TITLE, description: "12 total"),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM),
                   decoration: BoxDecoration(
@@ -413,7 +429,7 @@ class PatientSectionView extends StatelessWidget {
                   ),
                   child: DropdownButton<String>(
                     dropdownColor: PRIMARY_COLOR,
-                    value: "Today",
+                    value: HOME_PAGE_DROP_DOWN_DEFAULT_VALUE,
                     icon: const Icon(
                       Icons.keyboard_arrow_down,
                       color: Colors.white,
@@ -421,7 +437,7 @@ class PatientSectionView extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                     ),
-                    items: <String>["Today", "Tomorrow"].map((String value) {
+                    items: <String>[HOME_PAGE_DROP_DOWN_DEFAULT_VALUE, HOME_PAGE_DROP_DOWN_TOMORROW_VALUE].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(

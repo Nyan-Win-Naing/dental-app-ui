@@ -21,7 +21,7 @@ class CustomPainterDemo extends StatelessWidget {
           alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: const [
               Text(
                 "2:45",
                 style: TextStyle(
@@ -109,7 +109,7 @@ class CustomPainterDemo extends StatelessWidget {
                     scale: 2,
                   ),
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.bottomRight,
                   child: Icon(
                     Icons.check_circle_rounded,

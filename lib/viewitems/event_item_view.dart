@@ -12,13 +12,13 @@ class EventItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: MARGIN_LARGE),
+      margin: EdgeInsets.only(bottom: MARGIN_XLARGE - 2),
       height: 100,
       decoration: BoxDecoration(
         color: (!eventVo.isFinish) ? Colors.white : Color.fromRGBO(255, 255, 255, 0.7),
         borderRadius: BorderRadius.circular(MARGIN_MEDIUM_2),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Color.fromRGBO(0, 0, 0, 0.2),
             offset: Offset(0, 2),
             spreadRadius: 0,

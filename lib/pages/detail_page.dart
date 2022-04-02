@@ -20,7 +20,7 @@ class DetailPage extends StatelessWidget {
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
+              padding: const EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -29,7 +29,7 @@ class DetailPage extends StatelessWidget {
                     child:
                         AppBarIconItemView(iconData: Icons.arrow_back_rounded),
                   ),
-                  Text(
+                  const Text(
                     "Today",
                     style: TextStyle(
                       color: Colors.white,
@@ -60,44 +60,7 @@ class DetailPage extends StatelessWidget {
           children: [
             Container(
               height: screenHeight * 1.2 / 2,
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
-                        height: screenHeight * 0.6 / 2,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                PRIMARY_COLOR,
-                                Color.fromRGBO(36, 102, 194, 1.0),
-                                // Color.fromRGBO(94, 126, 173, 1.0),
-                              ]),
-                        ),
-                        child: PageCategoryHeaderView(
-                            title: "Office No. 248", description: "3 patients"),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: screenHeight * 0.6 / 2,
-                        color: PRIMARY_COLOR_DARK,
-                      )
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 330,
-                      width: 330,
-                      child: CustomPainterDemo(),
-                    ),
-                  ),
-                ],
-              ),
+              child: PatientsDetailsSectionView(screenHeight: screenHeight),
             ),
             Positioned(
               bottom: 60,
@@ -115,6 +78,57 @@ class DetailPage extends StatelessWidget {
   void _navigateToPatientDetailsScreen(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => DetailPage()));
+  }
+}
+
+class PatientsDetailsSectionView extends StatelessWidget {
+  const PatientsDetailsSectionView({
+    Key? key,
+    required this.screenHeight,
+  }) : super(key: key);
+
+  final double screenHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
+              height: screenHeight * 0.6 / 2,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      PRIMARY_COLOR,
+                      Color.fromRGBO(36, 102, 194, 1.0),
+                      // Color.fromRGBO(94, 126, 173, 1.0),
+                    ]),
+              ),
+              child: PageCategoryHeaderView(
+                  title: "Office No. 248", description: "3 patients"),
+            ),
+            Container(
+              width: double.infinity,
+              height: screenHeight * 0.6 / 2,
+              color: PRIMARY_COLOR_DARK,
+            )
+          ],
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Container(
+            height: 330,
+            width: 330,
+            child: CustomPainterDemo(),
+          ),
+        ),
+      ],
+    );
   }
 }
 

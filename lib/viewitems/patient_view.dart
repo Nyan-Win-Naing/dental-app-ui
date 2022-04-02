@@ -15,7 +15,7 @@ class PatientView extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       margin: EdgeInsets.only(right: MARGIN_MEDIUM_3),
-      height: 135,
+      height: PATIENTS_LIST_VIEW_ITEM_HEIGHT,
       decoration: BoxDecoration(
         color: isHomePage ? SECONDARY_COLOR : Color.fromRGBO(255, 255, 255, 0.9),
         borderRadius: BorderRadius.circular(MARGIN_MEDIUM),
@@ -33,7 +33,7 @@ class PatientView extends StatelessWidget {
         height: 135,
         decoration: BoxDecoration(
           color: isHomePage ? Color.fromRGBO(28, 103, 199, 1.0) : Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topRight: Radius.circular(MARGIN_MEDIUM),
             bottomRight: Radius.circular(MARGIN_MEDIUM),
           ),
@@ -112,11 +112,11 @@ class PatientView extends StatelessWidget {
               child: Container(
                 width: 35,
                 height: 35,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromRGBO(93, 158, 246, 1.0),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.download_done,
                   color: Colors.white,
                   size: MARGIN_MEDIUM_3,

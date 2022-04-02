@@ -19,3 +19,4 @@ const TEXT_BIG = 32.0;
 /// App Specific
 const APP_BAR_HEIGHT = 130.0;
 const PATIENTS_LIST_HEIGHT = 140.0;
+const PATIENTS_LIST_VIEW_ITEM_HEIGHT = 135.0;
